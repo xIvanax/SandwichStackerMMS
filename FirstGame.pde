@@ -54,7 +54,8 @@ class FirstGame{
     stepSize = 5;
     
     TowerTopX = bottomBunX = gameWidth/2 + bottomBun.width/2;
-    TowerTopY = bottomBunY = height-bottomBun.height;
+    TowerTopY = height-2*bottomBun.height;
+    bottomBunY = height-bottomBun.height;
     orientation = 1; // 1 za desno, -1 za lijevo
     speed = 5;
     speedIng=4;
@@ -133,16 +134,21 @@ class FirstGame{
         // provjera kolizije sastojka koji pada s bottomBun-om
         if (obj.posX + ingredientImage.width >= TowerTopX && obj.posX <= TowerTopX + bottomBun.width && obj.posY + ingredientImage.height >= TowerTopY && obj.posY <= TowerTopY) {
             // podesavanje visine sastojka
-            obj.posY = TowerTopY - ingredientImage.height;
+            obj.posY = TowerTopY;
             // ako smo potvrdili koliziju s bottomBun-om, provjeravamo je li sastojak ispravan
             if (obj.index == goalSandwich[Tower.size()] || (Tower.size() == sandwichHeight - 2 && obj.index == 12)) {
                 // ako je sastojak ispravan dodam ga na Tower
                 Tower.add(obj);
-                TowerTopY -= obj.height;
+                TowerTopY -= ingredientImage.height;
                 // provjera je li zavrsen sendvic
                 if (Tower.size() == sandwichHeight - 1 && obj.index == 12) {
                     score+= 10;
                     Tower.clear();
+                    TowerTopY = height-2*bottomBun.height;
+                    if(!catchMode){
+                      generateRandomSandwich();
+                      drawGoalSandwich();
+                    }
                 }
             } else {
                 // neispravan sastojak pao na bottomBun, smanjim broj zivota
