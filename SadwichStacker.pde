@@ -4,10 +4,22 @@ import java.io.FileWriter;
 
 boolean homeB, firstGameB, highscoresB, gameOverB, settingsB;
 
+//colores
+color yellow = color(255, 255, 102);
+color blue = color(0, 153, 204);
+color darkblue = color(0, 96, 128);
+color lightblue = color(153, 230, 255);
+color green = color(64, 191, 64);
+color darkgreen = color(38, 115, 38);
+color lightgreen = color(159, 223, 159);
+color white = color(255, 255, 255);
+color black = color(0, 0, 0);
+color orange = color(255, 153, 51);
+color red = color(226, 0, 0);
+
 Home home;
 FirstGame firstGame;
 Highscores highscores;
-GameOver gameOver;
 Settings settings;
 
 PImage bottomBun;
@@ -81,7 +93,6 @@ void draw() {
     highscores.myDraw();
   }
   if ( gameOverB ) {
-    gameOver.myDraw();
   }
   if ( settingsB ) {
     settings.myDraw();
@@ -94,7 +105,7 @@ void mousePressed() {
   if (homeB) home.myMousePressed();
   else if (firstGameB) firstGame.myMousePressed();
   else if (highscoresB) highscores.myMousePressed();
-  else if (gameOverB) gameOver.myMousePressed();
+
   else if (settingsB) settings.myMousePressed();
 }
 
@@ -160,7 +171,7 @@ void init(){
   home = new Home();
   firstGame = new FirstGame();
   highscores = new Highscores();
-  gameOver = new GameOver();
+
   settings = new Settings();
 
 }

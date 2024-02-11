@@ -17,11 +17,6 @@ class Home{
   
   void myDraw(){
 
-      //start soundtrack
-      if(first==true && musicOn==true){
-        song1.loop();
-        first=false;
-      }
       //........background...........
       background(background1);
       
@@ -92,14 +87,14 @@ class Home{
     //play
     if(overRect(b, a*3, rectW, rectH)==true)
     {
-      click.play();
+
       //secondGameB=true;
       homeB=false;
       firstGameB=true;
     }
     if(overRect(b, a*4, rectW, rectH)==true)
     {
-      click.play();
+
       homeB=false;
       settingsB=true;
 
@@ -107,14 +102,14 @@ class Home{
     }
     if(overRect(b, a*5, rectW, rectH)==true)
     {
-      click.play();
+
       homeB=false;
       highscoresB=true;
       highscores.calculate();
     }
     if(overRect(b, a*6, rectW, rectH)==true)
     {
-      click.play();
+
       exit();
     }
         

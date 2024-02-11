@@ -50,13 +50,6 @@ class Settings{
     }
     rect(b, a, rectW, rectH, 20);
     fill(white);
-
-    if(musicOn==true){
-      text("Music: on", width/2, a+rectH/2);
-    }
-    else{
-      text("Music: off", width/2, a+rectH/2);
-    }
     
     //Music volume.................................
     fill(blue);
@@ -80,7 +73,6 @@ class Settings{
     
     //volume
     fill(darkblue);
-    text(volume, b*1.5, a*3.25);
     
     //+
    if(overRect(b*1.8, a*3, b*0.2, a/2)==true){  
@@ -231,7 +223,6 @@ class Settings{
     }
     circle(50, 50, 50);
     imageMode(CENTER);
-    image(leftArrow,50,50);
     
   }
 
@@ -241,7 +232,6 @@ class Settings{
 
    
     if (overRect(b, 0, rectW, rectH)==true){
-      click.play();
       if(specialCatchMode==true){
         specialCatchMode=false;
       }
@@ -249,31 +239,7 @@ class Settings{
         specialCatchMode=true;
       }
     }
-    else if (overRect(b, a, rectW, rectH)==true){    //Music On/Off
-      click.play();
-      if(musicOn==true){
-        musicOn=false;
-        song1.pause();
-      }
-      else{
-        musicOn=true;
-        song1.play();
-      }
-    }
-    //-
-   else if (overRect(b, a*3, b*0.2, a/2)==true){
-     if(volume>0){
-       volume=volume-10;
-       song1.amp(float(volume)/100);
-     }
-   }
-   //+
-   else if (overRect(b*1.8, a*3, b*0.2, a/2)==true){
-     if(volume<100){
-       volume=volume+10;
-       song1.amp(float(volume)/100);
-     }
-   }
+    
    
    //<1
    else if (overRect(b, a*5, b*0.2, a/2)==true){
@@ -300,7 +266,7 @@ class Settings{
    }
    //mode
    else if (overRect(b, a*8, rectW, rectH)==true){
-      click.play();
+
       if(mode==true){
         mode=false;
         //song1.pause();
@@ -330,7 +296,7 @@ class Settings{
     
     //Back button
    if(overCircle(50,50,50)==true){
-     click.play();
+
      homeB=true;
      settingsB=false;
      sizetmp=size;
