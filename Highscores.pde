@@ -51,7 +51,7 @@ class Highscores{
     }
     circle(50, 50, 50);
     imageMode(CENTER);
-    image(leftArrow,50,50);
+//    image(leftArrow,50,50);
     
   }
 
@@ -59,7 +59,7 @@ class Highscores{
 
     //go back
    if(overCircle(50,50,50)==true){
-     click.play();
+
      homeB=true;
      highscoresB=false;
    }
