@@ -135,17 +135,20 @@ class FirstGame{
             // podesavanje visine sastojka
             obj.posY = TowerTopY - ingredientImage.height;
             // ako smo potvrdili koliziju s bottomBun-om, provjeravamo je li sastojak ispravan
-            if (obj.index == goalSandwich[Tower.size()]) {
+            if (obj.index == goalSandwich[Tower.size()] || (Tower.size() == sandwichHeight - 2 && obj.index == 12)) {
                 // ako je sastojak ispravan dodam ga na Tower
                 Tower.add(obj);
                 TowerTopY -= obj.height;
                 // provjera je li zavrsen sendvic
-                if (Tower.size() == sandwichHeight - 2) {
-                    // handle
+                if (Tower.size() == sandwichHeight - 1 && obj.index == 12) {
+                    score+= 10;
+                    Tower.clear();
                 }
             } else {
                 // neispravan sastojak pao na bottomBun, smanjim broj zivota
                 lives--;
+                if(lives == 0)
+                  setGameOver();
             }
             // micem sastojak iz liste padajucih
             objects.remove(i);
@@ -240,7 +243,7 @@ class FirstGame{
     }else if (keyCode == RIGHT) {
       moveRight = false;
     }else if(keyCode == ' '){
-      lastSpaceKeyPressTime = millis();
+      //lastSpaceKeyPressTime = millis();
     }
   }
   
@@ -282,6 +285,12 @@ class FirstGame{
   
   void GenerateNewIngredient(){
      nextIngredient = int(random(1, numIngredients));
+     int prob = int(random(1, 3)); //vjerojatnost da se dobije sastojak koji treba (pretpostavljam da se generira broj iz [1,3>; to jest 30%)
+     if (prob == 2){
+       nextIngredient = goalSandwich[Tower.size()];
+       if(nextIngredient == 0)
+         nextIngredient = 12; //ne znam zakaj, al kad treba top bun, daje bombu, pa ovo to fixa
+   }
   }
   
   void NextIngredientInfo(){
