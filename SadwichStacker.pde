@@ -21,6 +21,7 @@ Home home;
 FirstGame firstGame;
 Highscores highscores;
 Settings settings;
+GameOver gameOver;
 
 PImage bottomBun;
 PImage dispenser;
@@ -93,6 +94,7 @@ void draw() {
     highscores.myDraw();
   }
   if ( gameOverB ) {
+    gameOver.myDraw();
   }
   if ( settingsB ) {
     settings.myDraw();
