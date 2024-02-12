@@ -15,7 +15,7 @@ class Highscore {
   //učitavanje iz datoteke
   ArrayList<Highscore> loadHighscores() {
     ArrayList<Highscore> scores = new ArrayList<Highscore>();
-    String[] lines = loadStrings("scores.txt");
+    String[] lines = loadStrings("data/scores.txt");
     
     if (lines != null) {
       for (String line : lines) {
@@ -51,7 +51,7 @@ class Highscore {
       lines[i] = score.playerName + ", " + score.scoreValue;
     }
     try {
-      saveStrings("scores.txt", lines);
+      saveStrings("data/scores.txt", lines);
     } catch (Exception e) {
       println("Error saving scores: " + e.getMessage());
     }
