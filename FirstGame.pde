@@ -3,6 +3,7 @@ class FirstGame{
   int lives; //broj života
   FallingObject obj;
   ArrayList<FallingObject> objects, fallingIngredients, Tower;
+  ArrayList<Highscore> highscores;
   int time1,time2,timespeed1,timespeed2;
   float time,low,up;
   float secondsToFall;
@@ -35,6 +36,7 @@ class FirstGame{
     lives=3;
     objects = new ArrayList<FallingObject>(); // padajući sastojci
     Tower = new ArrayList<FallingObject>(); // toranj sastojaka na bottomBun-u
+    highscores = new ArrayList<Highscore>();
     time1=0;
     time2=0;
     timespeed1=0;
@@ -215,7 +217,14 @@ class FirstGame{
   
   
   void setGameOver(){ 
-    appendTextToFile("scores.txt", score + " "+day()+"/"+month()+"/"+year()+"-"+hour()+":"+minute()+":"+second() );
+    //appendTextToFile("scores.txt", score + " "+day()+"/"+month()+"/"+year()+"-"+hour()+":"+minute()+":"+second() );
+    
+    Highscore highscore = new Highscore();
+    highscores =  highscore.loadHighscores();
+    if(isHighScore(score, highscores)){
+      isHighscore = true;
+    }
+    
     firstGameB=false;
     gameOverB=true;
   }
@@ -305,5 +314,32 @@ class FirstGame{
     NextIngredient.resize(bottomBun.width, bottomBun.height);
     image(NextIngredient, width - width/6, 90); 
   }
+  
+  //Provjera je li igračev rezultat bolji od najgoreg rezultata na listi najboljih rezultata.
+  boolean isHighScore(int score, ArrayList<Highscore> topScores) {
+    if(score == 0){
+      return false;
+    }
+    if(topScores.isEmpty()){
+      return true;
+    }
+    
+    int minScore = topScores.get(0).scoreValue;
+    
+    // Find the minimum score among the top scores
+    for (int i=1; i<topScores.size(); i++) {
+      if (topScores.get(i).scoreValue < minScore) {
+        minScore = topScores.get(i).scoreValue;
+      }
+    }
+    
+    if (score > minScore) {
+      return true;
+    }
+    
+    return false;
+    
+  }
+
 
 }
