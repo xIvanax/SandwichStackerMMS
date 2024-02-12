@@ -11,13 +11,19 @@ class FirstGame{
   int originalBottomBunWidth, originalBottomBunHeight;
   int dispenserX;
   PImage background2 = loadImage("background2.jpg");
-  
+  PImage powerUp;
+  int powerUpX;
+  int powerUpY;
+  int slowdown = 0; //usporavanje zbog puza
+  int slowdownTimer = 0; //timer usporavanja
+  int slowdownCounter = 0; //kolko puzeva je trenutno aktivno
   int sandwichHeight;
   int  numIngredients;
   int[] goalSandwich = new int[10];
   
   boolean moveLeft, moveRight, dropIngredient;
   int stepSize; //pomak dispensera
+  int trenutniPowerUp = -1;
   
   int gameWidth = width - width/2 + 70;
   
@@ -27,7 +33,9 @@ class FirstGame{
   int speedIng; //brzina pada sastojka
   
   int nextIngredient; //sljedeći sastojak koji će pasti
-  
+  int byy = 0;
+  int ayy;
+      
   int lastSpaceKeyPressTime; //kad je zadnji put pritisnut space
   boolean ingredientDropped; 
   
@@ -113,7 +121,59 @@ class FirstGame{
         dropIngredient = false;
         ingredientDropped = true; // Set flag to indicate ingredient has been dropped
       }
-      
+      //generiranje powera
+      ;
+      if(byy == 0){
+        ayy = int(random(0,100));
+      }
+        //print(ayy)
+        if(ayy == 1 && byy == 0){
+          byy = 300;
+          ayy = 0;
+          print("oof");//generacija poweruppa
+        
+          int rnd = (int)random(0,3);
+          if(rnd == 0){
+            PImage powerUpImage = objectImages[26];
+            powerUp = powerUpImage.get();
+            powerUp.resize(90, 90); // Set size of powerupp
+            trenutniPowerUp = 0;
+            powerUpX = (int) random(0,540);
+            powerUpY = (int) random(60,490);
+          } 
+          if(rnd == 1){
+            PImage powerUpImage = objectImages[23];
+            powerUp = powerUpImage.get();
+            powerUp.resize(90, 90); // Set size of powerupp
+            trenutniPowerUp = 1;
+            powerUpX = (int) random(0,540);
+            powerUpY = (int) random(60,490);
+          } 
+          if(rnd == 2){
+            PImage powerUpImage = objectImages[17];
+            powerUp = powerUpImage.get();
+            powerUp.resize(90, 90); // Set size of powerupp
+            trenutniPowerUp = 2;
+            powerUpX = (int) random(0,540);
+            powerUpY = (int) random(60,490);
+          } 
+          
+        }
+        if(byy>0){
+          byy--;
+          //print(byy + "\n");
+          if(byy == 0){
+            print("eef");//uklanjanje poweruppa
+            trenutniPowerUp = -1;
+          }
+        }
+      //powerUpX = 540; //max value
+      //powerUpY = 490; //max value
+      //powerUpY = 60; //min value
+      if(trenutniPowerUp != -1){
+        image(powerUp, powerUpX, powerUpY);
+      }
+       
       //pomicanje cijelog sendviča
       TowerTopX -= speed * orientation;
       for(int i=0; i<Tower.size(); i++){
@@ -129,6 +189,31 @@ class FirstGame{
         
         PImage ingredientImage = objectImages[obj.index];
         ingredientImage.resize(bottomBun.width, bottomBun.height);
+
+        
+        // provjera kolizije sastojka koji pada s powerUpp-om
+        if (obj.posX + ingredientImage.width >= powerUpX && obj.posX <= powerUpX + powerUp.width && obj.posY + ingredientImage.height >= powerUpY && obj.posY <= powerUpY) {
+          if(trenutniPowerUp == 0){
+            if(lives<4){
+              lives++;
+            }
+          }
+          if(trenutniPowerUp == 1){
+            score+=15;
+          }
+          if(trenutniPowerUp == 2){
+            slowdown++;
+            slowdownCounter++;
+            slowdownTimer = 100;
+            speed -= 2;
+          }
+          trenutniPowerUp = -1;
+        }
+        slowdownTimer--;
+        if(slowdownTimer == 0){
+          speed += slowdownCounter*2;
+          slowdownCounter = 0;
+        }
         
         // provjera kolizije sastojka koji pada s bottomBun-om
         if (obj.posX + ingredientImage.width >= TowerTopX && obj.posX <= TowerTopX + bottomBun.width && obj.posY + ingredientImage.height >= TowerTopY && obj.posY <= TowerTopY) {
@@ -229,6 +314,8 @@ class FirstGame{
   }
   
   void myKeyPressed() {
+    if (keyCode == UP) { //status report
+      print(speed+ "\n"); }
     if (keyCode == LEFT) {
       moveLeft = true;
     }else if (keyCode == RIGHT) {
