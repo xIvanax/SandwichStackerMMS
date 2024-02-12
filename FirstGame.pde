@@ -66,7 +66,7 @@ class FirstGame{
     TowerTopX = bottomBunX = gameWidth/2 + bottomBun.width/2;
     TowerTopY = bottomBunY = height-bottomBun.height;
     orientation = 1; // 1 za desno, -1 za lijevo
-    speed = 5;
+    speed = 0; //treba biti 5, 0 je za svrhu testiranja
     speedIng=4;
     
     numIngredients = 12;
@@ -136,7 +136,7 @@ class FirstGame{
         
           int rnd = (int)random(0,3);
           if(rnd == 0){
-            PImage powerUpImage = objectImages[26];
+            PImage powerUpImage = objectImages[15]; //shield
             powerUp = powerUpImage.get();
             powerUp.resize(90, 90); // Set size of powerupp
             trenutniPowerUp = 0;
@@ -144,7 +144,7 @@ class FirstGame{
             powerUpY = (int) random(60,490);
           } 
           if(rnd == 1){
-            PImage powerUpImage = objectImages[23];
+            PImage powerUpImage = objectImages[14]; //star
             powerUp = powerUpImage.get();
             powerUp.resize(90, 90); // Set size of powerupp
             trenutniPowerUp = 1;
@@ -152,7 +152,7 @@ class FirstGame{
             powerUpY = (int) random(60,490);
           } 
           if(rnd == 2){
-            PImage powerUpImage = objectImages[17];
+            PImage powerUpImage = objectImages[13]; //snail
             powerUp = powerUpImage.get();
             powerUp.resize(90, 90); // Set size of powerupp
             trenutniPowerUp = 2;
@@ -196,7 +196,7 @@ class FirstGame{
         // provjera kolizije sastojka koji pada s powerUpp-om
         if (trenutniPowerUp!=-1 && obj.posX + ingredientImage.width >= powerUpX && obj.posX <= powerUpX + powerUp.width && obj.posY + ingredientImage.height >= powerUpY && obj.posY <= powerUpY) {
           if(trenutniPowerUp == 0){
-            if(lives<4){
+            if(lives<3){
               lives++;
             }
           }
@@ -234,6 +234,10 @@ class FirstGame{
                     Tower.clear();
                     TowerTopX = bottomBunX;
                     TowerTopY = bottomBunY;
+                    if(!catchMode){
+                      generateRandomSandwich();
+                      drawGoalSandwich();
+                    }
                 }
             } else {
                 // neispravan sastojak pao na bottomBun, smanjim broj zivota
@@ -247,8 +251,15 @@ class FirstGame{
             // If no collision, continue falling
             obj.posY += speedIng;
             image(ingredientImage, obj.posX, obj.posY);
-            if(obj.posY > height)
+            if(obj.posY > height){
+              //ako je pao sastojak koji nam je trebao gubimo zivot
+              if(obj.index == goalSandwich[Tower.size()] || (Tower.size() == sandwichHeight - 2 && obj.index == 12)){
+                lives--;
+                if(lives == 0)
+                  setGameOver();
+              }
               objects.remove(i);
+            }
         }
       }
       
