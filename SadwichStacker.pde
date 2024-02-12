@@ -1,6 +1,6 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-
+import controlP5.*;
 
 boolean homeB, firstGameB, highscoresB, gameOverB, settingsB;
 
@@ -23,6 +23,8 @@ Highscores highscores;
 Settings settings;
 GameOver gameOver;
 
+ControlP5 cp5;
+
 PImage bottomBun;
 PImage dispenser;
 PImage background1;
@@ -33,7 +35,10 @@ PImage logo;
 PImage[] objectImages;
 PFont f;
 
+boolean catchMode;
+boolean isHighscore;
 boolean specialCatchMode;
+
 boolean mode; //true->mouse, false ->keyboard
 int score; //player game score
 int numFall; //number of falling object
@@ -71,7 +76,10 @@ void setup() {
   gameOverB = false;
   settingsB = false;
   
+  isHighscore = false;
+  
   init();
+  
 
 }
 
@@ -107,7 +115,7 @@ void mousePressed() {
   if (homeB) home.myMousePressed();
   else if (firstGameB) firstGame.myMousePressed();
   else if (highscoresB) highscores.myMousePressed();
-
+  else if (gameOverB) gameOver.myMousePressed();
   else if (settingsB) settings.myMousePressed();
 }
 
@@ -169,7 +177,7 @@ void init(){
   }
   
   logo = loadImage("title.png");
-
+  
   home = new Home();
   firstGame = new FirstGame();
   highscores = new Highscores();
