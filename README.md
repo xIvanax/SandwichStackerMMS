@@ -9,3 +9,6 @@ Pri dnu ekrana je donji dio peciva koji se kreće neprekidno lijevo-desno. Iz go
 - ~~Dostupan će biti i prikaz prvih nekoliko najboljih rezultata.~~
 - ~~Povremeno se na ekranu može pojaviti kugla koja će utjecati na razne aspekte igre (brzina pada sastojaka, dodatni bodovi, poništenje jednog promašenog sastojaka...).~~
 - Dodatan kriterij igre je stabilnost sendviča, odnosno postoji mogućnost da se sendvič "prevrne".
+
+# Bugs
+- ako se na game over stisne gumb back, zaostane text field
