@@ -63,7 +63,7 @@ class GameOver{
     }
     else{
       fill(blue);
-      stroke(blue);
+      stroke(black);
     }
     circle(50, 50, 50);
     imageMode(CENTER);
@@ -71,8 +71,7 @@ class GameOver{
     
   }
 
-  void myMousePressed() {
-
+  void myMousePressed() { //ne radi, dunno why
     //go back
    if(overCircle(50,50,50)==true){
      score=0;

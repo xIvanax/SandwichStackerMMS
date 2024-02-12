@@ -43,11 +43,11 @@ class Highscores{
     //back button
     if(overCircle(50,50,50)==true){  
       fill(darkblue);
-      stroke(darkblue);
+      stroke(black);
     }
     else{
       fill(blue);
-      stroke(blue);
+      stroke(black);
     }
     circle(50, 50, 50);
     imageMode(CENTER);
