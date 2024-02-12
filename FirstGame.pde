@@ -139,10 +139,13 @@ class FirstGame{
                 // ako je sastojak ispravan dodam ga na Tower
                 Tower.add(obj);
                 TowerTopY -= obj.height;
+                TowerTopX = (int)obj.posX;
                 // provjera je li zavrsen sendvic
                 if (Tower.size() == sandwichHeight - 1 && obj.index == 12) {
                     score+= 10;
                     Tower.clear();
+                    TowerTopX = bottomBunX;
+                    TowerTopY = bottomBunY;
                 }
             } else {
                 // neispravan sastojak pao na bottomBun, smanjim broj zivota
@@ -156,8 +159,8 @@ class FirstGame{
             // If no collision, continue falling
             obj.posY += speedIng;
             image(ingredientImage, obj.posX, obj.posY);
-            /*if(obj.posY > height)
-              objects.remove(i);*/
+            if(obj.posY > height)
+              objects.remove(i);
         }
       }
       
