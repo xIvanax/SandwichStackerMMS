@@ -192,7 +192,7 @@ class FirstGame{
 
         
         // provjera kolizije sastojka koji pada s powerUpp-om
-        if (obj.posX + ingredientImage.width >= powerUpX && obj.posX <= powerUpX + powerUp.width && obj.posY + ingredientImage.height >= powerUpY && obj.posY <= powerUpY) {
+        if (trenutniPowerUp!=-1 && obj.posX + ingredientImage.width >= powerUpX && obj.posX <= powerUpX + powerUp.width && obj.posY + ingredientImage.height >= powerUpY && obj.posY <= powerUpY) {
           if(trenutniPowerUp == 0){
             if(lives<4){
               lives++;
