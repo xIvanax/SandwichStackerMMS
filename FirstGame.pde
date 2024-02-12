@@ -138,7 +138,8 @@ class FirstGame{
             if (obj.index == goalSandwich[Tower.size()] || (Tower.size() == sandwichHeight - 2 && obj.index == 12)) {
                 // ako je sastojak ispravan dodam ga na Tower
                 Tower.add(obj);
-                TowerTopY -= obj.height;
+                
+                TowerTopY -= ingredientImage.height;
                 TowerTopX = (int)obj.posX;
                 // provjera je li zavrsen sendvic
                 if (Tower.size() == sandwichHeight - 1 && obj.index == 12) {
