@@ -30,25 +30,26 @@ PImage background2;
 PImage heart;
 PImage heartEmpty;
 PImage logo;
+PImage leftArrow;
 PImage[] objectImages;
 PFont f;
 
-boolean specialCatchMode;
+boolean catchMode;
 boolean mode; //true->mouse, false ->keyboard
 int score; //player game score
 int numFall; //number of falling object
 int X=0;
 int size;
 int difficulty;
-boolean first=true;//used to play music only once
 
 void setup() {
   size=1;
   difficulty=1;
+  catchMode = true;
   size(800,600);
   
   score=0;
-  numFall=29;
+  numFall=13;
 
 // loadanje slika
   objectImages = new PImage[numFall];
@@ -58,9 +59,11 @@ void setup() {
   heart = loadImage("heart.png");
   heartEmpty = loadImage("heartEmpty.png");
   logo = loadImage("title.png");
+  leftArrow = loadImage("left-arrow.png");
 
   heart.resize(30, 0);
   heartEmpty.resize(30, 0);
+  leftArrow.resize(35, 0);
 
   f = loadFont("ProcessingSansPro-Semibold-48.vlw");
   textFont(f);
