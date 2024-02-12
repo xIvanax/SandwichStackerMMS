@@ -12,3 +12,4 @@ Pri dnu ekrana je donji dio peciva koji se kreće neprekidno lijevo-desno. Iz go
 
 # Bugs
 - ako se na game over stisne gumb back, zaostane text field
+- pri ponovnom game over, zaostane prijasnje ime u text field-u
