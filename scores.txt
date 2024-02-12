@@ -1,0 +1,3 @@
+ff, 30
+Dora, 20
+Dorotea, 10

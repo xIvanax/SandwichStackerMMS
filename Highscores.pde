@@ -10,7 +10,6 @@ class Highscores{
   }
   
   void myDraw(){
-    
     background(background1);
 
     textAlign(CENTER);
@@ -51,15 +50,12 @@ class Highscores{
     }
     circle(50, 50, 50);
     imageMode(CENTER);
-//    image(leftArrow,50,50);
-    
+    image(leftArrow,50,50);
   }
 
   void myMousePressed() {
-
     //go back
    if(overCircle(50,50,50)==true){
-
      homeB=true;
      highscoresB=false;
    }

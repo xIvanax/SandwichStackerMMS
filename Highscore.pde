@@ -4,19 +4,19 @@ import java.util.*;
 class Highscore {
   String playerName;
   int scoreValue;
-  
+
   Highscore(){}
 
   Highscore(String playerName, int scoreValue) {
     this.playerName = playerName;
     this.scoreValue = scoreValue;
   }
-  
+
   //učitavanje iz datoteke
   ArrayList<Highscore> loadHighscores() {
     ArrayList<Highscore> scores = new ArrayList<Highscore>();
-    String[] lines = loadStrings("scores.txt");
-    
+    String[] lines = loadStrings("data/scores.txt");
+
     if (lines != null) {
       for (String line : lines) {
         String[] parts = line.split(", ");
@@ -36,22 +36,22 @@ class Highscore {
     ArrayList<Highscore> scores = loadHighscores();
     scores.add(newScore);
     scores.sort(Comparator.comparingInt(s -> -s.scoreValue));
-    
+
     ArrayList<Highscore> topScores = new ArrayList<Highscore>();
-    
+
     if(!scores.isEmpty()){
       for(int i=0; i<scores.size() &&  i<5; i++){
         topScores.add(scores.get(i));
       }
     }
-    
+
     String[] lines = new String[scores.size()];
     for (int i = 0; i < topScores.size(); i++) {
       Highscore score = topScores.get(i);
       lines[i] = score.playerName + ", " + score.scoreValue;
     }
     try {
-      saveStrings("scores.txt", lines);
+      saveStrings("data/scores.txt", lines);
     } catch (Exception e) {
       println("Error saving scores: " + e.getMessage());
     }
