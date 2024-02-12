@@ -102,7 +102,7 @@ class Settings{
     }
     else{
       fill(blue);
-      stroke(blue);
+      stroke(black);
     }
     circle(50, 50, 50);
     imageMode(CENTER);

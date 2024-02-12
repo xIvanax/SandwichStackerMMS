@@ -176,7 +176,7 @@ void init(){
   home = new Home();
   firstGame = new FirstGame();
   highscores = new Highscores();
-
+  gameOver = new GameOver();
   settings = new Settings();
 
 }

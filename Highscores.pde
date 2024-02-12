@@ -15,13 +15,13 @@ class Highscores{
 
     textAlign(CENTER);
     textSize(a);
-    fill(color(darkblue));
+    fill(color(black));
     text("Top 10", width/2, a*2);
     
 
     textAlign(CENTER,CENTER);
     textSize(a/2);
-    fill(color(darkblue));
+    fill(color(black));
     text("position", b*2.5 ,a*3.5);
     text("score", b*4.5, a*3.5);
     text("date", b*7, a*3.5);
@@ -32,22 +32,22 @@ class Highscores{
     //fill the score table
     textAlign(CENTER, CENTER);
     for(int i = 0; i<10 && i<lines.length;++i){
-      fill(color(darkblue));
+      fill(color(black));
       text((i+1)+". ", b*2.5 ,a*(i+4.5));
-      fill(color(blue));
+      fill(color(black));
       text(scores[i], b*4.5, a*(i+4.5));
       text(dates[i], b*7, a*(i+4.5));
-      fill(color(darkblue));
+      fill(color(black));
       line(b, a*(i+5), b*9, a*(i+5));
     }
     //back button
     if(overCircle(50,50,50)==true){  
       fill(darkblue);
-      stroke(darkblue);
+      stroke(black);
     }
     else{
       fill(blue);
-      stroke(blue);
+      stroke(black);
     }
     circle(50, 50, 50);
     imageMode(CENTER);
