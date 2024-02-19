@@ -95,7 +95,7 @@ class GameOver{
      gameOverB=false;
      homeB=true;
      firstGame = new FirstGame();
+     playerName="";
    }
- 
   }
 }
