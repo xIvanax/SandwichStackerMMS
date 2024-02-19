@@ -1,0 +1,6 @@
+lala, 50
+ivana, 30
+Kiki, 15
+blabla, 15
+dorotea, 15
+null

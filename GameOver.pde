@@ -67,7 +67,7 @@ class GameOver{
     }
     circle(50, 50, 50);
     imageMode(CENTER);
-//    image(leftArrow,50,50);
+    image(leftArrow,50,50);
     
   }
 
