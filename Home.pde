@@ -87,29 +87,23 @@ class Home{
     //play
     if(overRect(b, a*3, rectW, rectH)==true)
     {
-
       //secondGameB=true;
       homeB=false;
       firstGameB=true;
     }
     if(overRect(b, a*4, rectW, rectH)==true)
     {
-
       homeB=false;
       settingsB=true;
-
-   
     }
     if(overRect(b, a*5, rectW, rectH)==true)
     {
-
       homeB=false;
       highscoresB=true;
-      highscores.calculate();
+      highscores.show();
     }
     if(overRect(b, a*6, rectW, rectH)==true)
     {
-
       exit();
     }
         

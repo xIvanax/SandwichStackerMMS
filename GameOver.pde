@@ -71,13 +71,15 @@ class GameOver{
     
   }
 
-  void myMousePressed() { //ne radi, dunno why
+  void myMousePressed() {
     //go back
    if(overCircle(50,50,50)==true){
      score=0;
      gameOverB=false;
      homeB=true;
      firstGame = new FirstGame();
+     nameField.hide();
+     nameField.setText("");
    }
    
    if(overRect((width-100)/2,(height+100)/2,100,30)==true){

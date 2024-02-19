@@ -5,17 +5,10 @@ import controlP5.*;
 boolean homeB, firstGameB, highscoresB, gameOverB, settingsB;
 
 //colores
-color yellow = color(255, 255, 102);
 color blue = color(0, 153, 204);
 color darkblue = color(0, 96, 128);
-color lightblue = color(153, 230, 255);
-color green = color(64, 191, 64);
-color darkgreen = color(38, 115, 38);
-color lightgreen = color(159, 223, 159);
 color white = color(255, 255, 255);
 color black = color(0, 0, 0);
-color orange = color(255, 153, 51);
-color red = color(226, 0, 0);
 
 Home home;
 FirstGame firstGame;
@@ -137,33 +130,10 @@ boolean overCircle(float x, float y, float diameter) {
   }
 }
 
-//appends text to file
-void appendTextToFile(String filename, String text) {
-  File f = new File(dataPath(filename));
-  if (!f.exists()) {
-    try {
-    f.createNewFile();
-    }
-    catch(Exception e) {
-      e.printStackTrace();
-    }
-  }
-  try {
-    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(f, true)));
-    out.println(text);
-    out.close();
-  }
-  catch (IOException e) {
-    e.printStackTrace();
-  }
-}
-
-
 void init(){
   
   background1.resize(width, height);
-  
-  bottomBun = loadImage("bottomBun.png");
+    bottomBun = loadImage("bottomBun.png");
   bottomBun.resize(width/7, 0);
   X=bottomBun.width/2;
   

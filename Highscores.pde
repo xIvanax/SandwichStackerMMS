@@ -1,5 +1,5 @@
 class Highscores{
-  String[] lines;
+  ArrayList<Highscore> lista = new ArrayList<Highscore>();
   int[] scores;
   String[] names;
   int a,b;
@@ -30,7 +30,7 @@ class Highscores{
     
     //fill the score table
     textAlign(CENTER, CENTER);
-    for(int i = 0; i<5 && i<lines.length;++i){
+    for(int i = 0; i<5 && i<lista.size();++i){
       fill(color(0));
       text((i+1)+". ", b*2.5 ,a*(i+4.5));
       fill(color(0));
@@ -62,20 +62,18 @@ class Highscores{
   }
 
   
-  void calculate(){
-    lines = loadStrings("scores.txt");
-    scores = new int[lines.length]; 
-    names = new String[lines.length];
+  void show(){
+    Highscore h = new Highscore();
+    lista= h.loadHighscores();
+    scores = new int[lista.size()]; 
+    names = new String[lista.size()];
     
-    if (lines != null) {
+    if (!lista.isEmpty()) {
       int i=0;
-      for (String line : lines) {
-        String[] parts = line.split(", ");
-        if (parts.length >= 2) {
-          names[i] = parts[0].trim();
-          scores[i] = Integer.parseInt(parts[1].trim());
+      for (Highscore highscore : lista) {
+          names[i] = highscore.playerName;
+          scores[i] = highscore.scoreValue;
           i++;
-        }
       }
     }
   }
