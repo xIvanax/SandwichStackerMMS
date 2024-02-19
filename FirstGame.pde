@@ -184,7 +184,7 @@ class FirstGame{
         TowerTopX = Tower.get(Tower.size() - 1).posX;
 
       // ispitivanje sudbine padajućeg sastojka
-      if(!collaps){
+      if(!collaps){//ako nije potrebno urušiti sendvič
         for (int i = objects.size()-1; i >= 0; i--) {
           obj = objects.get(i);
           PImage ingredientImage = objectImages[obj.index];
@@ -263,7 +263,7 @@ class FirstGame{
               }
           }
         }
-      }else if(collaps && !collapsed){//ako je zadovoljen uvjet urusavanja sendvica
+      }else if(collaps && !collapsed){//ako je zadovoljen uvjet urusavanja sendvica, ali nisu jos svi sastojci koji su bili na bottomBun-u "ispali" s ekrana
         FallingObject o = new FallingObject();
         if(Tower.size()>0){
           for(int i=0; i<Tower.size(); i++){
@@ -276,7 +276,8 @@ class FirstGame{
           if(Tower.get(Tower.size()-1).posY >= height)
             collapsed = true;
           }
-        }else if(collaps && collapsed){
+        }else if(collaps && collapsed){//zadovoljen je uvjet urusavanja sendvica i svi sastojci koji su bili na bottomBun-u su "ispali" s ekrana
+        //te sastojke uklanjamo iz liste objects
           ArrayList<FallingObject> pomocna = new ArrayList<FallingObject>();
           boolean provjera;
           for(int i=objects.size()-1; i>=0; i--){

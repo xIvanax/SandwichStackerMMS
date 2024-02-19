@@ -100,7 +100,6 @@ class Home{
     {
       homeB=false;
       highscoresB=true;
-      highscores.show();
     }
     if(overRect(b, a*6, rectW, rectH)==true)
     {
