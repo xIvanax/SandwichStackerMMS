@@ -125,9 +125,10 @@ class Settings{
      else
        difficultytmp=3;
    }
-   else if (overRect(b*1.8, a*4, b*0.2, a/2)==true){
+   else if (overRect(b*1.8 + 50, a*4, b*0.2, a/2)==true){
      difficultytmp=(difficultytmp+1)%4;
    }
+   
    //primjena svojstava
    else if (overRect(b, a*5, rectW, rectH)==true){
      difficulty=difficultytmp;

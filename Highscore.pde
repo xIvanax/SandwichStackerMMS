@@ -40,7 +40,7 @@ class Highscore {
     ArrayList<Highscore> topScores = new ArrayList<Highscore>();
 
     if(!scores.isEmpty()){
-      for(int i=0; i<scores.size() &&  i<5; i++){
+      for(int i=0; i<scores.size() && i<5; i++){
         topScores.add(scores.get(i));
       }
     }

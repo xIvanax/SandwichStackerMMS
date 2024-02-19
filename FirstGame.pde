@@ -4,9 +4,6 @@ class FirstGame{
   FallingObject obj;
   ArrayList<FallingObject> objects, fallingIngredients, Tower;
   ArrayList<Highscore> highscores;
-  int time1,time2,timespeed1,timespeed2;
-  float time,low,up;
-  float secondsToFall;
   float durationOfBiggerBottomBun = 0, durationOfProtection = 0;
   float timeBottomBunResized = 0, timeProtectionStarted = 0;
   int originalBottomBunWidth, originalBottomBunHeight;
@@ -28,7 +25,7 @@ class FirstGame{
   
   int gameWidth = width - width/2 + 70;
   
-  int TowerTopX, TowerTopY, bottomBunX, bottomBunY; // lokacija tornja i bottomBun-a
+  float TowerTopX, TowerTopY, bottomBunX, bottomBunY; // lokacija tornja i bottomBun-a
   int orientation; //u kojem smjeru trenutno bottomBun ide
   int speed; //brzina bottomBuna
   int speedIng; //brzina pada sastojka
@@ -40,19 +37,16 @@ class FirstGame{
   int lastSpaceKeyPressTime; //kad je zadnji put pritisnut space
   boolean ingredientDropped; 
   
+  float uvjet; //uvjet urusavanja sendvica
+  int redniBroj;
+  boolean collaps; //rusimo li sendvic
+  boolean collapsed; //provjera jesmo li srusili sendvic(kako bi mobli maknut objekte iz objects)
+  
   FirstGame(){
     lives=3;
     objects = new ArrayList<FallingObject>(); // padajući sastojci
     Tower = new ArrayList<FallingObject>(); // toranj sastojaka na bottomBun-u
     highscores = new ArrayList<Highscore>();
-    time1=0;
-    time2=0;
-    timespeed1=0;
-    timespeed2=0;
-    time=1000;
-    low=700;
-    up=1500;
-    secondsToFall=3;
     originalBottomBunWidth = bottomBun.width;
     originalBottomBunHeight = bottomBun.height;
     dispenserX=(width-width/6)/2-dispenser.width/2;
@@ -66,22 +60,23 @@ class FirstGame{
     TowerTopX = bottomBunX = gameWidth/2 + bottomBun.width/2;
     TowerTopY = bottomBunY = height-bottomBun.height;
     orientation = 1; // 1 za desno, -1 za lijevo
-    speed = 0; //treba biti 5, 0 je za svrhu testiranja
-    speedIng=4;
+    speed = 5; //treba biti 5, 0 je za svrhu testiranja
+    speedIng = 4;
     
     numIngredients = 12;
+    uvjet = width / 7; //duzina sastojaka
+    redniBroj = 0;
+    collaps = collapsed = false;
     
     generateRandomSandwich();
     GenerateNewIngredient();
   }
   
   void myDraw(){
-      time2=millis();
-      timespeed2=millis();
-      
       background2.resize(width, height);
       background(background2);
       imageMode(CORNER);
+      
       //score
       fill(255);
       textSize(20);
@@ -117,14 +112,29 @@ class FirstGame{
       image(bottomBun, bottomBunX, height-bottomBun.height);
       
       if (dropIngredient && !ingredientDropped && millis() - lastSpaceKeyPressTime >= 500) {
-        obj = new FallingObject(nextIngredient, dispenserX, 1, false);
-        objects.add(obj); 
+        obj = new FallingObject(nextIngredient, dispenserX, redniBroj);
+        objects.add(obj);
+        redniBroj += 1;
         GenerateNewIngredient();
         dropIngredient = false;
         ingredientDropped = true; // Set flag to indicate ingredient has been dropped
       }
+
+      //tezina igre
+      if(difficulty==0){
+        speedIng = 2;
+      }
+      else if(difficulty==1){
+        speedIng = 4;
+      }
+      else if(difficulty==2){
+        speedIng = 6;
+      }
+      else if(difficulty==3){
+        speedIng = 8;
+      }
+        
       //generiranje powera
-      ;
       if(byy == 0){
         ayy = int(random(0,100));
       }
@@ -132,7 +142,7 @@ class FirstGame{
         if(ayy == 1 && byy == 0){
           byy = 300;
           ayy = 0;
-          print("oof");//generacija poweruppa
+          //print("oof");//generacija poweruppa
         
           int rnd = (int)random(0,3);
           if(rnd == 0){
@@ -165,7 +175,7 @@ class FirstGame{
           byy--;
           //print(byy + "\n");
           if(byy == 0){
-            print("eef");//uklanjanje poweruppa
+            //print("eef");//uklanjanje poweruppa
             trenutniPowerUp = -1;
           }
         }
@@ -177,7 +187,6 @@ class FirstGame{
       }
        
       //pomicanje cijelog sendviča
-      TowerTopX -= speed * orientation;
       for(int i=0; i<Tower.size(); i++){
         obj = Tower.get(i);
         PImage ingredientImage = objectImages[obj.index];
@@ -185,134 +194,140 @@ class FirstGame{
         obj.posX += orientation*speed;
         image(ingredientImage,obj.posX,obj.posY);
       }
+      if(Tower.size() > 0)
+        TowerTopX = Tower.get(Tower.size() - 1).posX;
       // ispitivanje sudbine padajućeg sastojka
-      for (int i = objects.size()-1; i >= 0; i--) {
-        obj = objects.get(i);
-        
-        PImage ingredientImage = objectImages[obj.index];
-        ingredientImage.resize(bottomBun.width, bottomBun.height);
-
-        
-        // provjera kolizije sastojka koji pada s powerUpp-om
-        if (trenutniPowerUp!=-1 && obj.posX + ingredientImage.width >= powerUpX && obj.posX <= powerUpX + powerUp.width && obj.posY + ingredientImage.height >= powerUpY && obj.posY <= powerUpY) {
-          if(trenutniPowerUp == 0){
-            if(lives<3){
-              lives++;
-            }
-          }
-          if(trenutniPowerUp == 1){
-            score+=15;
-          }
-          if(trenutniPowerUp == 2){
-            slowdown++;
-            slowdownCounter++;
-            slowdownTimer = 100;
-            speed -= 2;
-          }
-          trenutniPowerUp = -1;
-        }
-        slowdownTimer--;
-        if(slowdownTimer == 0){
-          speed += slowdownCounter*2;
-          slowdownCounter = 0;
-        }
-        
-        // provjera kolizije sastojka koji pada s bottomBun-om
-        if (obj.posX + ingredientImage.width >= TowerTopX && obj.posX <= TowerTopX + bottomBun.width && obj.posY + ingredientImage.height >= TowerTopY && obj.posY <= TowerTopY) {
-            // podesavanje visine sastojka
-            obj.posY = TowerTopY - ingredientImage.height;
-            // ako smo potvrdili koliziju s bottomBun-om, provjeravamo je li sastojak ispravan
-            if (obj.index == goalSandwich[Tower.size()] || (Tower.size() == sandwichHeight - 2 && obj.index == 12)) {
-                // ako je sastojak ispravan dodam ga na Tower
-                Tower.add(obj);
-                
-                TowerTopY -= ingredientImage.height;
-                TowerTopX = (int)obj.posX;
-                // provjera je li zavrsen sendvic
-                if (Tower.size() == sandwichHeight - 1 && obj.index == 12) {
-                    score+= 10;
-                    Tower.clear();
-                    TowerTopX = bottomBunX;
-                    TowerTopY = bottomBunY;
-                    if(!catchMode){
-                      generateRandomSandwich();
-                      drawGoalSandwich();
-                    }
-                }
-            } else {
-                // neispravan sastojak pao na bottomBun, smanjim broj zivota
-                lives--;
-                if(lives == 0)
-                  setGameOver();
-            }
-            // micem sastojak iz liste padajucih
-            objects.remove(i);
-        } else {
-            // If no collision, continue falling
-            obj.posY += speedIng;
-            image(ingredientImage, obj.posX, obj.posY);
-            if(obj.posY > height){
-              //ako je pao sastojak koji nam je trebao gubimo zivot
-              if(obj.index == goalSandwich[Tower.size()] || (Tower.size() == sandwichHeight - 2 && obj.index == 12)){
-                lives--;
-                if(lives == 0)
-                  setGameOver();
+      if(!collaps){
+        for (int i = objects.size()-1; i >= 0; i--) {
+          obj = objects.get(i);
+          
+          PImage ingredientImage = objectImages[obj.index];
+          ingredientImage.resize(bottomBun.width, bottomBun.height);
+  
+          
+          // provjera kolizije sastojka koji pada s powerUpp-om
+          if (trenutniPowerUp!=-1 && obj.posX + ingredientImage.width >= powerUpX && obj.posX <= powerUpX + powerUp.width && obj.posY + ingredientImage.height >= powerUpY && obj.posY <= powerUpY) {
+            if(trenutniPowerUp == 0){
+              if(lives<3){
+                lives++;
               }
-              objects.remove(i);
             }
+            if(trenutniPowerUp == 1){
+              score+=15;
+            }
+            if(trenutniPowerUp == 2){
+              slowdown++;
+              slowdownCounter++;
+              slowdownTimer = 100;
+              speed -= 2;
+            }
+            trenutniPowerUp = -1;
+          }
+          slowdownTimer--;
+          if(slowdownTimer == 0){
+            speed += slowdownCounter*2;
+            slowdownCounter = 0;
+          }
+
+          
+          // provjera kolizije sastojka koji pada s bottomBun-om
+          if (obj.posX + ingredientImage.width >= TowerTopX && obj.posX <= TowerTopX + bottomBun.width && obj.posY + ingredientImage.height >= TowerTopY && obj.posY <= TowerTopY) {
+              // podesavanje visine sastojka
+              obj.posY = TowerTopY - ingredientImage.height;
+              
+              // ako smo potvrdili koliziju s bottomBun-om, provjeravamo je li sastojak ispravan
+              if (obj.index == goalSandwich[Tower.size()] || (Tower.size() == sandwichHeight - 2 && obj.index == 12)) {
+                  // ako je sastojak ispravan dodam ga na Tower
+                  Tower.add(obj);
+                  
+                  TowerTopY -= ingredientImage.height;
+                  TowerTopX = (int)obj.posX;
+                  println("TowerTopX: "+TowerTopX);
+                  println("BottomBunX: "+bottomBunX);
+                  println("Razlika: "+abs(TowerTopX - bottomBunX));
+                  println("Uvjet: "+uvjet);
+                  // provjera je li zavrsen sendvic
+                  if (Tower.size() == sandwichHeight - 1 && obj.index == 12) {
+                      score+= 10;
+                      Tower.clear();
+                      TowerTopX = bottomBunX;
+                      TowerTopY = bottomBunY;
+                      if(!catchMode){
+                        generateRandomSandwich();
+                        drawGoalSandwich();
+                      }
+                  }
+                  
+                  //provjera dolazi li do "urusavanja" sendvica
+                  if(abs(TowerTopX - bottomBunX) >= uvjet){
+                      println("Urusavanje!");
+                      collaps = true;
+                      lives--;
+                      if (lives == 0) setGameOver();
+                   }
+                  
+              } else {
+                  // neispravan sastojak pao na bottomBun, smanjim broj zivota
+                  lives--;
+                  if(lives == 0)
+                    setGameOver();
+              }
+              // micem sastojak iz liste padajucih
+              objects.remove(i);
+          } else {
+              // If no collision, continue falling
+              obj.posY += speedIng;
+              image(ingredientImage, obj.posX, obj.posY);
+              if(obj.posY > height){
+                //ako je pao sastojak koji nam je trebao gubimo zivot
+                if(obj.index == goalSandwich[Tower.size()] || (Tower.size() == sandwichHeight - 2 && obj.index == 12)){
+                  lives--;
+                  if(lives == 0)
+                    setGameOver();
+                }
+                objects.remove(i);
+              }
+          }
         }
+      }else if(collaps && !collapsed){//ako ja zadovoljen uvjet urusavanja sendvica
+        FallingObject o = new FallingObject();
+        if(Tower.size()>0){
+          for(int i=0; i<Tower.size(); i++){
+          o = Tower.get(i);
+          PImage ingredientImage = objectImages[o.index];
+          ingredientImage.resize(bottomBun.width, bottomBun.height);
+          o.posY += 5;
+          image(ingredientImage,o.posX,o.posY);
+        }
+        if(Tower.get(Tower.size()-1).posY >= height)collapsed = true;
+        }
+        
+      }else if(collaps && collapsed){
+        ArrayList<FallingObject> pomocna = new ArrayList<FallingObject>();
+        boolean provjera;
+        for(int i=objects.size()-1; i>=0; i--){
+          FallingObject o = objects.get(i);
+          provjera = false;
+          for(int j=0; j<Tower.size(); j++){
+            if(o.redniBroj != Tower.get(j).redniBroj){
+              provjera = true;
+              break;
+            }
+          }
+          if(!provjera)pomocna.add(objects.get(i));
+        }
+        
+        Tower.clear();
+        objects.clear();
+        objects = pomocna;
+        collaps = collapsed = false;
+        TowerTopX = bottomBunX;
+        TowerTopY = bottomBunY;
       }
-      
-        if(difficulty==0){
-          if(timespeed2-timespeed1>2000){
-            if(secondsToFall>1.2)
-              secondsToFall-=0.02;
-            if(low>600)
-              low-=10;
-            if(up>1000)
-              up-=10;
-            timespeed1=timespeed2;
-          }
-        }
-        else if(difficulty==1){
-          if(timespeed2-timespeed1>1000){
-            if(secondsToFall>0.7)
-              secondsToFall-=0.02;
-            if(low>200)
-              low-=5;
-            if(up>600)
-              up-=10;
-            timespeed1=timespeed2;
-          }
-        }
-        else if(difficulty==2){
-          if(timespeed2-timespeed1>1000){
-            if(secondsToFall>0.6)
-              secondsToFall-=0.05;
-            if(low>200)
-              low-=10;
-            if(up>600)
-              up-=50;
-            timespeed1=timespeed2;
-          }
-        }
-        else if(difficulty==3){
-          if(timespeed2-timespeed1>1000){
-            if(secondsToFall>0.7)
-              secondsToFall-=0.07;
-            if(low>100)
-              low-=10;
-            if(up>300)
-              up-=70;
-            timespeed1=timespeed2;
-          }
-        }
   }
   
   
   void setGameOver(){ 
-    //appendTextToFile("scores.txt", score + " "+day()+"/"+month()+"/"+year()+"-"+hour()+":"+minute()+":"+second() );
-    
     Highscore highscore = new Highscore();
     highscores =  highscore.loadHighscores();
     if(isHighScore(score, highscores)){
@@ -372,8 +387,7 @@ class FirstGame{
   
   void drawGoalSandwich(){
     // Set bottomBun
-    PImage bottomBunImage = loadImage("bottomBun.png");
-    bottomBunImage.resize(width / 7, 0);
+    PImage bottomBunImage = objectImages[0];
     PImage bottomBun = bottomBunImage.get();
     bottomBun.resize(width / 7, 0);
     image(bottomBun, width - width/6, height-bottomBun.height);
@@ -429,13 +443,11 @@ class FirstGame{
       }
     }
     
-    if (score > minScore) {
+    if (topScores.size()==5 && score > minScore || topScores.size() < 5) {
       return true;
     }
     
     return false;
-    
   }
-
 
 }

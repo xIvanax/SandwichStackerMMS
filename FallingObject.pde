@@ -4,21 +4,18 @@ class FallingObject{
   int height;
   float posX;
   float posY;
-  int points;
-  boolean bomb;
-  int index;
+  int index; //za ucitavanje slike
+  int redniBroj;
   
-  FallingObject(int i, float x, int pts, boolean bmb){
+  FallingObject(int i, float x, int r){
     width=objectImages[i].width;
     height=objectImages[i].height;
     posX=x;   
     posY=dispenser.height;
-    points=pts;
-    bomb=bmb;
     index=i;
+    redniBroj=r;
   }
-    FallingObject(){
-  }
+    FallingObject(){}
   
   
 }
