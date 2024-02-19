@@ -104,7 +104,6 @@ void draw() {
 
 void mousePressed() {
   if (homeB) home.myMousePressed();
-  else if (firstGameB) firstGame.myMousePressed();
   else if (highscoresB) highscores.myMousePressed();
   else if (gameOverB) gameOver.myMousePressed();
   else if (settingsB) settings.myMousePressed();
