@@ -2,14 +2,15 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import controlP5.*;
 
-boolean homeB, firstGameB, highscoresB, gameOverB, settingsB;
+boolean homeB, firstGameB, highscoresB, gameOverB, settingsB; // prikaz pojedinih prozora
 
-//colores
+//boje
 color blue = color(0, 153, 204);
 color darkblue = color(0, 96, 128);
 color white = color(255, 255, 255);
 color black = color(0, 0, 0);
 
+//prozori
 Home home;
 FirstGame firstGame;
 Highscores highscores;
@@ -18,98 +19,108 @@ GameOver gameOver;
 
 ControlP5 cp5;
 
+//slike
 PImage bottomBun;
 PImage dispenser;
 PImage background1;
 PImage background2;
 PImage heart;
-PImage heartEmpty;
 PImage logo;
 PImage[] objectImages;
 PImage leftArrow;
 PFont f;
 
+// način igre
 boolean catchMode;
+
+// je li nešto highscore ili ne
 boolean isHighscore;
 
 int score; //player game score
-int numFall; //number of falling object
-int X=0;
-int size;
+int numFall; //broj padajućih objekata
 int difficulty;
 
 void setup() {
-  size=1;
-  difficulty=1;
+  difficulty = 1; // po defaultu normalan difficulty
   size(800,600);
-  catchMode = true;
-  score=0;
+  catchMode = true; // po default-u je način igre t.d. uvijek slažemo isti sendvič
+  score = 0; // na početku imamo 0 bodova
   numFall=16;
 
-// loadanje slika
+  // loadanje slika i podešavanje veličina
   objectImages = new PImage[numFall];
-
+  bottomBun = loadImage("bottomBun.png");
   dispenser = loadImage("dispenser.png");
   background1 = loadImage("background.jpg");
   heart = loadImage("heart.png");
-  heartEmpty = loadImage("heartEmpty.png");
   logo = loadImage("title.png");
   leftArrow = loadImage("left-arrow.png");
-
+  dispenser = loadImage("dispenser.png");
   heart.resize(30, 0);
-  heartEmpty.resize(30, 0);
   leftArrow.resize(30, 0);
-
+  background1.resize(width, height);
+  bottomBun.resize(width/7, 0);
+  
+  for (int i=0; i<numFall; ++i) {
+    objectImages[i] = loadImage(i+".png");
+    objectImages[i].resize(0, width/10);
+  }
+  //font
   f = loadFont("ProcessingSansPro-Semibold-48.vlw");
   textFont(f);
-  
+  // na početku vidimo Home screen
   homeB = true;
   firstGameB = false;
   highscoresB = false;
   gameOverB = false;
   settingsB = false;
-  
+  // na početku nismo ostvarili highscore
   isHighscore = false;
-  
+ 
   init();
 }
 
+// kretanje
 void keyPressed(){
-  if(firstGameB) firstGame.myKeyPressed();
+  if(firstGameB)
+    firstGame.myKeyPressed();
 }
-
 void keyReleased(){
-  if(firstGameB) firstGame.myKeyReleased();
+  if(firstGameB)
+    firstGame.myKeyReleased();
 }
 
 void draw() {
-  if ( homeB ) {
+  if (homeB) {
     home.myDraw();
   }
-  if ( firstGameB ) {
+  if(firstGameB) {
     firstGame.myDraw();
   }
-  if ( highscoresB ) {
+  if(highscoresB) {
     highscores.myDraw();
   }
-  if ( gameOverB ) {
+  if(gameOverB) {
     gameOver.myDraw();
   }
-  if ( settingsB ) {
+  if(settingsB) {
     settings.myDraw();
   }
-
 }
 
 
 void mousePressed() {
-  if (homeB) home.myMousePressed();
-  else if (highscoresB) highscores.myMousePressed();
-  else if (gameOverB) gameOver.myMousePressed();
-  else if (settingsB) settings.myMousePressed();
+  if (homeB)
+    home.myMousePressed();
+  else if (highscoresB)
+    highscores.myMousePressed();
+  else if (gameOverB)
+    gameOver.myMousePressed();
+  else if (settingsB)
+    settings.myMousePressed();
 }
 
-//Check if mouse hovers over rectangle
+//provjera klika na gumb (pravokutni)
 boolean overRect(float x, float y, float width, float height) {
   if (mouseX >= x && mouseX <= x+width &&
     mouseY >= y && mouseY <= y+height) {
@@ -119,6 +130,7 @@ boolean overRect(float x, float y, float width, float height) {
   }
 }
 
+//provjera klika na gumb (okrugli)
 boolean overCircle(float x, float y, float diameter) {
   float disX = x - mouseX;
   float disY = y - mouseY;
@@ -130,25 +142,9 @@ boolean overCircle(float x, float y, float diameter) {
 }
 
 void init(){
-  
-  background1.resize(width, height);
-    bottomBun = loadImage("bottomBun.png");
-  bottomBun.resize(width/7, 0);
-  X=bottomBun.width/2;
-  
-  dispenser = loadImage("dispenser.png");
-  
-  for (int i=0; i<numFall; ++i) {
-    objectImages[i] = loadImage(i+".png");
-    objectImages[i].resize(0, width/10);
-  }
-  
-  logo = loadImage("title.png");
-  
   home = new Home();
   firstGame = new FirstGame();
   highscores = new Highscores();
   gameOver = new GameOver();
   settings = new Settings();
-
 }

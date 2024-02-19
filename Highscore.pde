@@ -32,6 +32,8 @@ class Highscore {
     return scores;
   }
 
+  //pohrana novog rezultata u datoteku scores.txt
+  //podaci ce biti spremljeni u padajućem redosljedu (prvo upisujemo najbolji rezultat)
   void saveScore(Highscore newScore) {
     ArrayList<Highscore> scores = loadHighscores();
     scores.add(newScore);
@@ -50,6 +52,7 @@ class Highscore {
       Highscore score = topScores.get(i);
       lines[i] = score.playerName + ", " + score.scoreValue;
     }
+
     try {
       saveStrings("data/scores.txt", lines);
     } catch (Exception e) {

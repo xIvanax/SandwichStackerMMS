@@ -1,14 +1,14 @@
 class Highscores{
-  ArrayList<Highscore> lista = new ArrayList<Highscore>();
-  int[] scores;
-  String[] names;
+  ArrayList<Highscore> lista; //tu ce biti ucitani podaci iz datoteke
   int a,b;
-   
+
   Highscores(){
     a=height/15;
     b=width/10;
+    lista = new ArrayList<Highscore>();
   }
-  
+
+  //funkcija koja ucitava podatke te prikazuje listu najboljih ostvarenih rezultata
   void myDraw(){
     background(background1);
 
@@ -16,7 +16,7 @@ class Highscores{
     textSize(a);
     fill(color(0));
     text("Top 5", width/2, a*2);
-    
+
 
     textAlign(CENTER,CENTER);
     textSize(a);
@@ -27,20 +27,23 @@ class Highscores{
     stroke(color(0));
     line(b, a*4, b*9, a*4);
     line(b, a*4-2, b*9, a*4-2);
-    
+
+    Highscore h = new Highscore();
+    lista = h.loadHighscores();
+
     //fill the score table
     textAlign(CENTER, CENTER);
     for(int i = 0; i<5 && i<lista.size();++i){
       fill(color(0));
       text((i+1)+". ", b*2.5 ,a*(i+4.5));
       fill(color(0));
-      text(scores[i], b*4.5, a*(i+4.5));
-      text(names[i], b*7, a*(i+4.5));
+      text(lista.get(i).scoreValue, b*4.5, a*(i+4.5));
+      text(lista.get(i).playerName, b*7, a*(i+4.5));
       fill(color(0));
       line(b, a*(i+5), b*9, a*(i+5));
     }
     //back button
-    if(overCircle(50,50,50)==true){  
+    if(overCircle(50,50,50)==true){
       fill(darkblue);
       stroke(black);
     }
@@ -59,22 +62,5 @@ class Highscores{
      homeB=true;
      highscoresB=false;
    }
-  }
-
-  
-  void show(){
-    Highscore h = new Highscore();
-    lista= h.loadHighscores();
-    scores = new int[lista.size()]; 
-    names = new String[lista.size()];
-    
-    if (!lista.isEmpty()) {
-      int i=0;
-      for (Highscore highscore : lista) {
-          names[i] = highscore.playerName;
-          scores[i] = highscore.scoreValue;
-          i++;
-      }
-    }
   }
 }
