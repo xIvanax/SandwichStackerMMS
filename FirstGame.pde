@@ -224,7 +224,7 @@ class FirstGame{
                   TowerTopY -= ingredientImage.height;
                   TowerTopX = (int)obj.posX;
                   // provjera je li zavrsen sendvic
-                  if (Tower.size() == sandwichHeight - 1 && obj.index == 12) {
+                  if (Tower.size() == sandwichHeight - 1 && obj.index == 12 || obj.index == 0) {
                       score+= 10;
                       Tower.clear();
                       TowerTopX = bottomBunX;
