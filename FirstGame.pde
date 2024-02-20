@@ -9,7 +9,6 @@ class FirstGame{
   PImage powerUp;
   int powerUpX;
   int powerUpY;
-  int slowdown = 0; //usporavanje zbog puza
   int slowdownTimer = 0; //timer usporavanja
   int slowdownCounter = 0; //kolko puzeva je trenutno aktivno
   int sandwichHeight;
@@ -28,8 +27,8 @@ class FirstGame{
   int speedIng; //brzina pada sastojka
   
   int nextIngredient; //sljedeći sastojak koji će pasti
-  int byy = 0; // ???
-  int ayy; // ???
+  int byy = 0; // pomocna varijabla za kontrolu poweruppova
+  int ayy; // pomocna varijabla za kontrolu poweruppova
       
   int lastSpaceKeyPressTime; //kad je zadnji put pritisnut space
   boolean ingredientDropped; 
@@ -130,45 +129,45 @@ class FirstGame{
         speedIng = 8;
       }
       //generiranje powera
-      if(byy == 0){
-        ayy = int(random(0,100));
+      if(byy == 0){ //byy je timer koliko dugo postoji powerupp
+        ayy = int(random(0,100)); // u 1 od 100 drawowa generiramo powerupp
       }
-        if(ayy == 1 && byy == 0){
-          byy = 300;
-          ayy = 0;
-          int rnd = (int)random(0,3);
-          if(rnd == 0){
+        if(ayy == 1 && byy == 0){ //ako trenutno nema poweruppa i radi se o jednom od 100 drawowa u kojem prikazujemo powerupp
+          byy = 300; //trajanje poweruppa na ekranu (koliko dugo je uhvatljiv)
+          ayy = 0; // powerupp postoji na ekranu
+          int rnd = (int)random(0,3); //o kojem se poweruppu radi
+          if(rnd == 0){ //ako 0, extra life
             PImage powerUpImage = objectImages[15]; //shield
             powerUp = powerUpImage.get();
             powerUp.resize(90, 90);
             trenutniPowerUp = 0;
-            powerUpX = (int) random(0,540);
+            powerUpX = (int) random(0,540); //random lokacija
             powerUpY = (int) random(60,490);
           } 
-          if(rnd == 1){
+          if(rnd == 1){ // ako 1, extra point
             PImage powerUpImage = objectImages[14]; //star
             powerUp = powerUpImage.get();
             powerUp.resize(90, 90);
             trenutniPowerUp = 1;
-            powerUpX = (int) random(0,540);
+            powerUpX = (int) random(0,540); //random lokacija
             powerUpY = (int) random(60,490);
           } 
-          if(rnd == 2){
+          if(rnd == 2){//ako 2, usporavanje
             PImage powerUpImage = objectImages[13]; //snail
             powerUp = powerUpImage.get();
             powerUp.resize(90, 90);
             trenutniPowerUp = 2;
-            powerUpX = (int) random(0,540);
+            powerUpX = (int) random(0,540); //random lokacija
             powerUpY = (int) random(60,490);
           } 
         }
-        if(byy>0){
+        if(byy>0){ //smanjenje timera
           byy--;
-          if(byy == 0){
+          if(byy == 0){ //ako je timer 0, onda je powerupp nestao (istekao je)
             trenutniPowerUp = -1;
           }
         }
-      if(trenutniPowerUp != -1){
+      if(trenutniPowerUp != -1){ //ako ako trebamo prikazati powerupp, prikazujemo ga 
         image(powerUp, powerUpX, powerUpY);
       }
       
@@ -193,25 +192,24 @@ class FirstGame{
           // provjera kolizije sastojka koji pada s powerUpp-om
           if (trenutniPowerUp!=-1 && obj.posX + ingredientImage.width >= powerUpX && obj.posX <= powerUpX + powerUp.width && obj.posY + ingredientImage.height >= powerUpY && obj.posY <= powerUpY) {
             if(trenutniPowerUp == 0){
-              if(lives<3){
+              if(lives<3){ //ako je pogoden extra life, dobi life, ako ti fali life
                 lives++;
               }
             }
-            if(trenutniPowerUp == 1){
+            if(trenutniPowerUp == 1){ //ako pogoden extra points, dobi points
               score+=15;
             }
-            if(trenutniPowerUp == 2){
-              slowdown++;
-              slowdownCounter++;
-              slowdownTimer = 100;
+            if(trenutniPowerUp == 2){//ako pogoden puz, usporavanje
+              slowdownCounter++; //broj trenutno aktivnih usporavanja
+              slowdownTimer = 100; //trajanje usporavanja
               speed -= 2;
             }
-            trenutniPowerUp = -1;
+            trenutniPowerUp = -1; //nakon sto je pogoden powerupp, micemo ga s ekrana
           }
           slowdownTimer--;
-          if(slowdownTimer == 0){
-            speed += slowdownCounter*2;
-            slowdownCounter = 0;
+          if(slowdownTimer == 0){ //ako je isteklo vrijeme usporavanja
+            speed += slowdownCounter*2; // vrati pocetnu brzinu, tj ukloni usporavanje
+            slowdownCounter = 0; //maknuta sva usporavanja
           }
           // provjera kolizije sastojka koji pada s bottomBun-om
           if (obj.posX + ingredientImage.width >= TowerTopX && obj.posX <= TowerTopX + bottomBun.width && obj.posY + ingredientImage.height >= TowerTopY && obj.posY <= TowerTopY) {
